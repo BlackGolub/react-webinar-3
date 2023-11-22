@@ -5,6 +5,7 @@ class Store {
   constructor(initState = {}) {
     this.state = initState;
     this.listeners = []; // Слушатели изменений состояния
+    this.maxNum = Math.max(0, ...this.state.list?.map(item => item.code) ?? [0]); //Внешний счетчик элементов
   }
 
   /**
@@ -42,11 +43,14 @@ class Store {
    * Добавление новой записи
    */
   addItem() {
+    this.maxNum = this.maxNum + 1;
+    const newNum = {code: this.maxNum, title: 'Новый элемент'};
+  
     this.setState({
       ...this.state,
-      list: [...this.state.list, {code: this.state.list.length + 1, title: 'Новая запись'}]
-    })
-  };
+      list: [...this.state.list, newNum]
+    });
+  }
 
   /**
    * Удаление записи по коду
@@ -68,11 +72,16 @@ class Store {
       ...this.state,
       list: this.state.list.map(item => {
         if (item.code === code) {
-          item.selected = !item.selected;
+          const selectionsCounter = item.selected ? item.selections : (item.selections || 0) + 1;
+          if (!item.selected) {
+            console.log(`Выделяли ${selectionsCounter} раз`);
+          }
+          return {...item, selected: !item.selected, selections: selectionsCounter};
+        } else {
+          return {...item, selected: false};
         }
-        return item;
       })
-    })
+    });
   }
 }
 

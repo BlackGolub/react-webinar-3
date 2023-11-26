@@ -73,9 +73,6 @@ class Store {
       list: this.state.list.map(item => {
         if (item.code === code) {
           const selectionsCounter = item.selected ? item.selections : (item.selections || 0) + 1;
-          if (!item.selected) {
-            console.log(`Выделяли ${selectionsCounter} раз`);
-          }
           return {...item, selected: !item.selected, selections: selectionsCounter};
         } else {
           return {...item, selected: false};

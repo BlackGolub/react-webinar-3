@@ -1,8 +1,10 @@
-import React, {useCallback} from 'react';
+import React, { useState, useCallback} from 'react';
 import List from "./components/list";
 import Controls from "./components/controls";
 import Head from "./components/head";
 import PageLayout from "./components/page-layout";
+import Basket from './components/basket';
+import './app.css';
 
 /**
  * Приложение
@@ -10,30 +12,33 @@ import PageLayout from "./components/page-layout";
  * @returns {React.ReactElement}
  */
 function App({store}) {
+  const [isBasketVisible, setBasketVisible] = useState(false);
 
   const list = store.getState().list;
+  const basketList = store.getState().basketList;
 
   const callbacks = {
     onDeleteItem: useCallback((code) => {
       store.deleteItem(code);
     }, [store]),
 
-    onSelectItem: useCallback((code) => {
-      store.selectItem(code);
+    handleAddToBasket: useCallback((item) => {
+      store.addItemToBasket(item);
     }, [store]),
 
-    onAddItem: useCallback(() => {
-      store.addItem();
-    }, [store])
+    toggleBasket: useCallback(() => {
+      setBasketVisible(prev => !prev);
+    }, [])
   }
 
   return (
     <PageLayout>
-      <Head title='Приложение на чистом JS'/>
-      <Controls onAdd={callbacks.onAddItem}/>
-      <List list={list}
-            onDeleteItem={callbacks.onDeleteItem}
-            onSelectItem={callbacks.onSelectItem}/>
+      <Head title='Магазин'/>
+      <Controls basketList={basketList} onToggleBasket={callbacks.toggleBasket}/>
+      {isBasketVisible && (<>
+      <div className="Overlay"/>
+      <Basket basketList={basketList} onDeleteItem={callbacks.onDeleteItem} onToggleBasket={callbacks.toggleBasket}/></>)}
+      <List list={list} onAddToBasket={callbacks.handleAddToBasket}/>
     </PageLayout>
   );
 }

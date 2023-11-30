@@ -1,5 +1,20 @@
 .Controls {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   padding: 20px;
+}
+
+.Controls-total{
+  display: flex;
+  align-items: center;
+}
+
+.Controls-button{
+  padding: 2px 10px;
+}
+
+.Controls-value{
+  margin: 0 10px;
+  font-weight: bold;
 }

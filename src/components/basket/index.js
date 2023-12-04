@@ -19,30 +19,30 @@ function Basket({ basketList, onDeleteItem, onToggleBasket }){
     return acc;
   }, []);
 
-    return (
-        <div className='Basket'>
-          <Head title={'Корзина'}>
-            <button onClick={onToggleBasket} className="Basket-close">
-              Закрыть
-            </button>
-          </Head>
-          <div className="Basket-items">
-            <List list={uniqueItems} isInBasket={true} onDeleteItem={onDeleteItem}/>
-          </div>
-          <div className="Basket-total">
-            <span>Итого:</span>
-            <p className="Basket-total-sum">{formattedPrice}</p>
-          </div>
-        </div>
-      )
-    }
+  return (
+    <div className='Basket'>
+      <Head title={'Корзина'}>
+        <button onClick={onToggleBasket} className="Basket-close">
+          Закрыть
+        </button>
+      </Head>
+      <div className="Basket-items">
+        <List list={uniqueItems} isInBasket={true} onDeleteItem={onDeleteItem}/>
+      </div>
+      <div className="Basket-total">
+        <span>Итого:</span>
+        <p className="Basket-total-sum">{formattedPrice}</p>
+      </div>
+    </div>
+  )
+}
     
-    Basket.propTypes = {
-      basketList: PropTypes.arrayOf(PropTypes.shape({
-        code: PropTypes.number.isRequired
-      })).isRequired,
-      onDeleteItem: PropTypes.func.isRequired,
-      onToggleBasket: PropTypes.func.isRequired
-    };
+Basket.propTypes = {
+  basketList: PropTypes.arrayOf(PropTypes.shape({
+    code: PropTypes.number.isRequired
+  })).isRequired,
+  onDeleteItem: PropTypes.func.isRequired,
+  onToggleBasket: PropTypes.func.isRequired
+};
 
 export default React.memo(Basket);

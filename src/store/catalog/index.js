@@ -9,23 +9,27 @@ class Catalog extends StoreModule {
 
   initState() {
     return {
-      list: []
+      list: [],
+      count: 0,
     };
   }
 
-  async load() {
-    const response = await fetch('/api/v1/articles?limit=100&skip=0');
+  async load(number) {
+    const response = await fetch(`/api/v1/articles?limit=10&skip=${(number - 1) * 10}`);
     const json = await response.json();
 
-    const responseCount = await fetch("/api/v1/articles?fields=count");
+    const responseCount = await fetch("/api/v1/articles?limit=10&skip=10&fields=items(_id, title, price),count");
     const jsonCount = await responseCount.json();
-    const totalItems = jsonCount.result.count;
 
-    this.setState({
-      ...this.getState(),
-      list: json.result.items
-    });
-    this.store.actions.navigation.setTotalItems(totalItems);
+    const totalCount = Math.ceil(jsonCount.result.count / 10);
+    this.setState(
+      {
+        ...this.getState(),
+        list: json.result.items,
+        count: totalCount,
+      },
+      "Загружены товары из АПИ"
+    );
   }
 }
 

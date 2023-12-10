@@ -1,31 +1,37 @@
-import {memo, useCallback} from 'react';
-import propTypes from 'prop-types';
-import {numberFormat} from "../../utils";
-import {cn as bem} from "@bem-react/classname";
+import { memo, useCallback } from "react";
 import PropTypes from "prop-types";
-import './style.css';
+import { numberFormat } from "../../utils";
+import { cn as bem } from "@bem-react/classname";
+import "./style.css";
+import { useNavigate } from "react-router-dom";
+import useStore from "../../store/use-store";
 
 function ItemBasket(props) {
-
-  const cn = bem('ItemBasket');
+  const navigate = useNavigate();
+  const store = useStore();
+  const cn = bem("ItemBasket");
 
   const callbacks = {
-    onRemove: (e) => props.onRemove(props.item._id)
+    onRemove: useCallback(() => props.onRemove(props.item._id), [props]),
+    closeModal: useCallback(() => store.actions.modals.close(), [store]),
   };
 
   return (
     <div className={cn()}>
-      {/*<div className={cn('code')}>{props.item._id}</div>*/}
-      <div className={cn('title')}>{props.item.title}</div>
-      <div className={cn('right')}>
-        <div className={cn('cell')}>{numberFormat(props.item.price)} ₽</div>
-        <div className={cn('cell')}>{numberFormat(props.item.amount || 0)} шт</div>
-        <div className={cn('cell')}>
+      <div className={cn("title")} onClick={() => { navigate(`/${props.item._id}`); callbacks.closeModal();}}>
+        {props.item.title}
+      </div>
+      <div className={cn("right")}>
+        <div className={cn("cell")}>{numberFormat(props.item.price)} ₽</div>
+        <div className={cn("cell")}>
+          {numberFormat(props.item.amount || 0)} шт
+        </div>
+        <div className={cn("cell")}>
           <button onClick={callbacks.onRemove}>Удалить</button>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 ItemBasket.propTypes = {
@@ -35,11 +41,11 @@ ItemBasket.propTypes = {
     price: PropTypes.number,
     amount: PropTypes.number
   }).isRequired,
-  onRemove: propTypes.func,
-}
+  onRemove: PropTypes.func,
+};
 
 ItemBasket.defaultProps = {
   onRemove: () => {},
-}
+};
 
 export default memo(ItemBasket);

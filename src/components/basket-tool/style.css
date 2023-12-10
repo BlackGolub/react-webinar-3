@@ -4,13 +4,24 @@
   justify-content: flex-end;
   padding: 20px;
   font-size: 18px;
+  /* text-wrap: nowrap; */
 }
 
 .BasketTool-label {
-
+  text-wrap: nowrap;
 }
 
 .BasketTool-total {
   font-weight: bold;
   margin: 0 20px;
+  text-wrap: nowrap;
+}
+.BasketTool-link {
+  color: #0087e9;
+  font-family: Arial;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  width: 100%;
 }

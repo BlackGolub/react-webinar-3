@@ -1,42 +1,81 @@
-import React from 'react';
-import {memo} from "react";
-import useStore from '../../store/use-store';
-import useSelector from '../../store/use-selector';
-import './style.css';
+import { memo, useState } from "react";
+import PropTypes from "prop-types";
+import { cn as bem } from "@bem-react/classname";
+import "./style.css";
 
-const Navigation = () => {
-  const { totalPages, currentPage } = useSelector(state => state.navigation);
-  const store = useStore();
+function Navigation({ activePage, setActivePage, count }) {
+  const cn = bem("Navigation");
 
-  const handleClick = (page) => {
-    if (page !== '...') {
-      store.actions.navigation.setCurrentPage(page);
-    }console.log(handleClick)
-  };
+  if (activePage === 1) {
+    return (
+      <div className={cn()}>
+        <div className={cn("number", { active: "true" })}>{activePage}</div>
+        <div className={cn("number")} onClick={() => setActivePage(activePage + 1)}>
+          {activePage + 1}
+        </div>
+        <div className={cn("number")} onClick={() => setActivePage(activePage + 2)}>
+          {activePage + 2}
+        </div>
+        <div className={cn("number", { color: "grey" })}>...</div>
+        <div className={cn("number")} onClick={() => setActivePage(count)}>
+          {count}
+        </div>
+      </div>
+    );
+  }
 
-  let pages = [];
-  for (let i = 1; i <= totalPages; i++) {
-    if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
-      pages.push(i);
-    } else if (i === currentPage - 2 || i === currentPage + 2) {
-      pages.push('...');
-    }
+  if (activePage === count) {
+    return (
+      <div className={cn()}>
+        <div className={cn("number")} onClick={() => setActivePage(1)}>1</div>
+        <div className={cn("number", { color: "grey" })}>...</div>
+        <div className={cn("number")} onClick={() => setActivePage(activePage - 2)}>
+          {activePage - 2}
+        </div>
+        <div className={cn("number")} onClick={() => setActivePage(activePage - 1)}>
+          {activePage - 1}
+        </div>
+        <div className={cn("number", { active: "true" })}>{count}</div>
+      </div>
+    );
   }
 
   return (
-    <div className="Navigation">
-      {pages.map((page, index) => (
-        <button
-          key={index}
-          onClick={() => handleClick(page)}
-          className={page === currentPage ? 'Navigation-button active' : 'Navigation-button'}
-          disabled={page === '...'}
-        >
-          {page}
-        </button>
-      ))}
+    <div className={cn()}>
+      {activePage > 2 && (
+        <div className={cn("number")} onClick={() => setActivePage(1)}>1</div>
+      )}
+      {activePage > 3 && (
+        <div className={cn("number", { color: "grey" })}>...</div>
+      )}
+      <div className={cn("number")} onClick={() => setActivePage(activePage - 1)}>
+        {activePage - 1}
+      </div>
+      <div className={cn("number", { active: "true" })}>{activePage}</div>
+      <div className={cn("number")} onClick={() => setActivePage(activePage + 1)}>
+        {activePage + 1}
+      </div>
+      {activePage < count - 2 && (
+        <div className={cn("number", { color: "grey" })}>...</div>
+      )}
+      {activePage < count - 1 && (
+        <div className={cn("number")} onClick={() => setActivePage(count)}>
+          {count}
+        </div>
+      )}
     </div>
   );
+}
+
+Navigation.propTypes = {
+  activePage: PropTypes.number.isRequired,
+  count: PropTypes.number.isRequired,
+  setActivePage: PropTypes.func.isRequired
+};
+
+Navigation.defaultProps = {
+  setActivePage: () => {},
+  activePage: 1
 };
 
 export default memo(Navigation);

@@ -1,0 +1,30 @@
+.Item-info {
+  display: flex;
+  flex-direction: column;
+  padding: 0 40px;
+  color: #000;
+  font-family: Arial;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.Item-info-description {
+  margin-top: 20px;
+}
+.Item-info-price {
+  margin-top: 20px;
+  font-weight: 700;
+  font-size: 24px;
+}
+.Item-info-button {
+  margin-top: 20px;
+  width: 76px;
+  height: 21px;
+  border-radius: 2px;
+  border: 1px solid #767676;
+  background: #efefef;
+  text-align: center;
+  font-size: 13px;
+}

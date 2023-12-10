@@ -1,34 +1,28 @@
 .Navigation {
   display: flex;
-  align-items: center;
   justify-content: flex-end;
-  padding: 0 20px;
-  margin-top: 20px;
+  padding-top: 22px;
+  padding-right: 21px;
 }
-  
-.Navigation button {
-  padding: 5px 10px;
-  border: none;
-  background-color: white;
+
+.Navigation-number {
+  min-width: 18px;
+  padding-left: 1px;
+  padding-right: 1px;
+  height: 20px;
+  color: #000;
+  text-align: center;
+  font-family: Arial;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
-  
-.Navigation button:hover {
-  background-color: #e0e0e0;
+.Navigation-number_color_grey {
+  color: #ccc;
 }
-  
-.Navigation button.active {
-  background-color: #007bff;
-  color: white;
-}
-  
-.Navigation button:disabled {
-  color: black;
-  background-color: white;
-  cursor: not-allowed;
-}
-  
-.Navigation span {
-  margin: 0 5px;
+.Navigation-number_active_true {
+  background-color: rgba(0, 135, 233, 1);
+  color: #fff;
 }

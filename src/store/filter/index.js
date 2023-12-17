@@ -10,75 +10,46 @@ class CategoriesState extends StoreModule {
   async getCategories() {
     try {
       const response = await fetch('/api/v1/categories?fields=_id,title,parent(_id)&limit=*');
-      const json = await response.json();
-      console.log('Ответ сервера:', json);
-
-      const categories = json.result.items.map(item => ({
+      const res = await response.json();
+      const result = res.result.items.map(item => ({
         title: item.title,
         value: item._id,
         parent: item.parent?._id || null
       }));
 
-      console.log('Преобразованные категории:', categories);
-
-      const menu = this.buildMenu(categories);
-      console.log('Построенное меню:', menu);
-
-      const structuredMenu = this.structureMenu(menu);
-      console.log('Структурированное меню:', structuredMenu);
-
+      const menu = this.sortList(result);
       this.setState({
         ...this.getState(),
-        category: [{ title: 'Все', value: '' }, ...structuredMenu]
+        category: [{ title: 'Все', value: '' }, ...menu]
       });
     } catch (err) {
-      console.error(err);
+      console.error('Ошибка при получении категорий:', err);
     }
   }
 
-  buildMenu(data) {
-    const menu = [];
-    const nodes = {};
+  sortList(items) {
+    const parentChildMap = {};
 
-    data.forEach(item => {
-      const prefix = item.parent ? item.parent.slice(21) === '339' ? '-- ' : '- ' : '';
-      const node = this.createNode(item, nodes, prefix);
-
-      if (!item.parent) {
-        menu.push(node);
+    items.forEach(item => {
+      const parent = item.parent || null;
+      if (!parentChildMap[parent]) {
+        parentChildMap[parent] = [];
       }
+      parentChildMap[parent].push(item);
     });
 
-    return menu;
+    return this.sortItems(null, parentChildMap);
   }
 
-  createNode(item, nodes, prefix) {
-    const node = {
-      title: `${prefix}${item.title}`,
-      value: item.value,
-      children: []
-    };
-
-    nodes[item.value] = node;
-
-    if (item.parent) {
-      nodes[item.parent].children.push(node);
-    }
-
-    return node;
-  }
-
-  structureMenu(menu) {
-    let structuredMenu = [];
-
-    menu.forEach(item => {
-      structuredMenu.push(item);
-      if (item.children.length > 0) {
-        structuredMenu = [...structuredMenu, ...this.structureMenu(item.children)];
-      }
+  sortItems(parent, parentChildMap, depth = 0) {
+    const children = parentChildMap[parent] || [];
+    let result = [];
+    children.forEach(child => {
+      child.title = '- '.repeat(depth) + child.title;
+      result.push(child);
+      result = [...result, ...this.sortItems(child.value, parentChildMap, depth + 1)];
     });
-
-    return structuredMenu;
+    return result;
   }
 }
 

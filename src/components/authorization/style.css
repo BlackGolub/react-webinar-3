@@ -1,0 +1,32 @@
+.Authorization{
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.Authorization-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 9px;
+    border-radius: 2px;
+    border: 1px solid #767676;
+    background: #ededed;
+    color: black;
+    font-size: 13px;
+    margin-left: 20px;
+    text-decoration: none;
+}
+
+.Authorization-button:hover {
+    cursor: pointer;
+    background-color: #cccccc;
+  }
+
+.Authorization-user-name{
+    width: 53px;
+    height: 15px;
+    white-space: nowrap;
+    font-size: 12px;
+}

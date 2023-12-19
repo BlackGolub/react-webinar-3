@@ -12,17 +12,12 @@ import UserInfo from "../../components/user-info";
 import { useNavigate } from "react-router-dom";
 
 function Profile() {
-  const store = useStore();
   const navigate = useNavigate();
   const {user, authorization} = useSelector(state => state.user)
 
   useEffect(() => {
     if (!authorization) navigate('/login')
   }, [authorization])
-
-  useInit(() => {
-    store.actions.catalog.initParams();
-  }, [], true);
 
   const {t} = useTranslate();
 

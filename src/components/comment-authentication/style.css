@@ -1,0 +1,16 @@
+.CommentAuthentication {
+  margin: 30px 0 0 40px;
+}
+  
+.CommentAuthentication-link {
+  color: #0087E9;
+}
+  
+.CommentAuthentication-button {
+  color: #5f5f5f;
+  font-size: 16px;
+  text-decoration-line: underline;
+  cursor: pointer;
+  border: none;
+  background-color: white;
+}

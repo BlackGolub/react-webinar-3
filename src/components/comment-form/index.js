@@ -1,7 +1,7 @@
-import { memo, useState } from "react";
-import PropTypes from 'prop-types';
-import { cn as bem } from '@bem-react/classname';
-import './style.css';
+import { cn as bem } from '@bem-react/classname'
+import PropTypes from 'prop-types'
+import { memo, useState } from "react"
+import './style.css'
 
 function CommentForm({ exists, title, onChangeFormComment, commentId, hand, type }) {
   const cn = bem('CommentForm');
@@ -24,7 +24,7 @@ function CommentForm({ exists, title, onChangeFormComment, commentId, hand, type
           <textarea className={cn('textarea')} value={value} onChange={e => setValue(e.target.value)}/>
           <div className={cn('wrapper')}>
             <button className={cn('button')} type='submit'>Отправить</button>
-            <button className={cn('button')} type='button' onClick={() => onChangeFormComment('false')}>Отмена</button>
+            {type ? <button className={cn('button')} type='button' onClick={() => onChangeFormComment('false')}>Отмена</button> : null}
           </div>
         </form>
       )}

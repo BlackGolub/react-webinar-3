@@ -1,12 +1,12 @@
-import { memo, useState } from "react";
-import Comment from "../../components/comment";
-import { generateListComments } from "../../utils/comment-format";
-import CommentCounter from "../../components/comment-counter";
-import CommentAuthentication from "../../components/comment-authentication";
-import useSelector from "../../hooks/use-selector";
-import CommentForm from "../../components/comment-form";
-import { useDispatch } from "react-redux";
-import commentsActions from "../../store-redux/comments/actions";
+import { memo, useState } from "react"
+import { useDispatch } from "react-redux"
+import Comment from "../../components/comment"
+import CommentAuthentication from "../../components/comment-authentication"
+import CommentCounter from "../../components/comment-counter"
+import CommentForm from "../../components/comment-form"
+import useSelector from "../../hooks/use-selector"
+import commentsActions from "../../store-redux/comments/actions"
+import { generateListComments } from "../../utils/comment-format"
 
 function Comments({ comments, idArticle }) {
   const exists = useSelector(state => state.session.exists);
@@ -39,6 +39,7 @@ function Comments({ comments, idArticle }) {
         checkProfile={toggleCommentActionState}
         onChangeFormComment={toggleFormComment}
         formComment={formComment}
+        profile={profile}
       />
     )));
 
@@ -46,8 +47,10 @@ function Comments({ comments, idArticle }) {
     <>
       <CommentCounter count={comments.length} />
       {commentsList}
-      {commentActionState === 'none' && <CommentAuthentication exists={exists} type={commentActionState} checkProfile={toggleCommentActionState} />}
-      {formComment === 'false' && <CommentForm exists={exists} title={'Новый комментарий'} hand={postComment} />}
+      {commentActionState === 'none' && <CommentAuthentication exists={exists} 
+                                        type={commentActionState} checkProfile={toggleCommentActionState} />}
+      {formComment === 'false' && <CommentForm exists={exists} title={'Новый комментарий'}
+                                   hand={postComment} onChangeFormComment={toggleFormComment}/>}
     </>
   )
 }
